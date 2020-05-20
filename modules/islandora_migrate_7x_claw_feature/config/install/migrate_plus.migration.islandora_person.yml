@@ -15,32 +15,32 @@ migration_group: islandora_7x
 label: 'Islandora Person'
 source:
   plugin: islandora
-  solr_base_url: 'http://10.0.2.2:8080/solr'
-  q: 'fedora_datastreams_ms:MODS'
+  solr_base_url: 'http://localhost:9999/solr'
+  q: 'RELS_EXT_isMemberOfCollection_uri_ms:"info:fedora/archden:yearbooks" OR PID:"archden:yearbooks"'
   row_type: MODS
-  fedora_base_url: 'http://10.0.2.2:8080/fedora'
+  fedora_base_url: 'http://localhost:9999/fedora'
   data_fetcher_plugin: http
   authentication:
     plugin: basic
     username: fedoraAdmin
     password: fedoraAdmin
-  data_parser_plugin: authenticated_xml 
+  data_parser_plugin: authenticated_xml
   item_selector: '/mods:mods/mods:name[@type = "personal"]'
   constants:
     creator_uid: 1
   fields:
     -
-      name: name 
+      name: name
       label: Name
       selector: 'mods:namePart'
   ids:
     name:
       type: string
 process:
-  name: name 
+  name: name
 destination:
   plugin: 'entity:taxonomy_term'
-  default_bundle: person 
+  default_bundle: person
 migration_dependencies:
   required: { }
   optional: { }

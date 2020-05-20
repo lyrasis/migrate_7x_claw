@@ -15,16 +15,16 @@ migration_group: islandora_7x
 label: 'Islandora Objects'
 source:
   plugin: islandora
-  solr_base_url: 'http://10.0.2.2:8080/solr'
-  q: 'RELS_EXT_isMemberOfCollection_uri_ms:"info:fedora/islandora:sp_basic_image_collection" OR PID:"islandora:sp_basic_image_collection"' 
+  solr_base_url: 'http://localhost:9999/solr'
+  q: 'RELS_EXT_isMemberOfCollection_uri_ms:"info:fedora/archden:yearbooks" OR PID:"archden:yearbooks"'
   row_type: solr
-  fedora_base_url: 'http://10.0.2.2:8080/fedora'
+  fedora_base_url: 'http://localhost:9999/fedora'
   data_fetcher_plugin: http
   authentication:
     plugin: basic
     username: fedoraAdmin
     password: fedoraAdmin
-  data_parser_plugin: json_list 
+  data_parser_plugin: json_list
   item_selector: '/response/docs'
   constants:
     creator_uid: 1
@@ -46,27 +46,27 @@ source:
       label: 'Last Modified Date'
       selector: 'fgs_lastModifiedDate_dt'
     -
-      name: title 
+      name: title
       label: 'Title'
       selector: 'fgs_label_s'
     -
-      name: subtitle 
+      name: subtitle
       label: 'Subtitle'
       selector: 'mods_titleInfo_subTitle_s'
     -
-      name: resource_type 
+      name: resource_type
       label: 'Type of Resource'
       selector: 'mods_typeOfResource_s'
     -
-      name: identifier 
+      name: identifier
       label: 'Identifier'
       selector: 'mods_identifier_local_s'
     -
-      name: description 
+      name: description
       label: 'Description'
       selector: 'mods_abstract_s'
     -
-      name: extent 
+      name: extent
       label: 'Physical Extent'
       selector: 'mods_physicalDescription_extent_s'
     -
@@ -74,7 +74,7 @@ source:
       label: 'Member Of'
       selector: 'RELS_EXT_isMemberOfCollection_uri_ms'
     -
-      name: person_agents 
+      name: person_agents
       label: "Person agents"
       selector: 'mods_name_personal_namePart_ms'
     -
@@ -82,7 +82,7 @@ source:
       label: "Person roles"
       selector: 'mods_name_personal_role_roleTerm_text_ms'
     -
-      name: corporate_agents 
+      name: corporate_agents
       label: "Corporate agents"
       selector: 'mods_name_corporate_namePart_ms'
     -
@@ -90,7 +90,7 @@ source:
       label: "Corporate roles"
       selector: 'mods_name_corporate_role_roleTerm_text_ms'
     -
-      name: topic 
+      name: topic
       label: "Topics"
       selector: 'mods_subject_topic_ms'
     -
@@ -98,31 +98,31 @@ source:
       label: "Temporal"
       selector: 'mods_subject_temporal_ms'
     -
-      name: geographic 
+      name: geographic
       label: "Geographic"
       selector: 'mods_subject_geographic_ms'
     -
-      name: continent 
+      name: continent
       label: "Continent"
       selector: 'mods_subject_hierarchicalGeographic_continent_ms'
     -
-      name: country 
+      name: country
       label: "Country"
       selector: 'mods_subject_hierarchicalGeographic_country_ms'
     -
-      name: province 
+      name: province
       label: "Province"
       selector: 'mods_subject_hierarchicalGeographic_province_ms'
     -
-      name: region 
+      name: region
       label: "Region"
       selector: 'mods_subject_hierarchicalGeographic_region_ms'
     -
-      name: county 
+      name: county
       label: "County"
       selector: 'mods_subject_hierarchicalGeographic_county_ms'
     -
-      name: city 
+      name: city
       label: "City"
       selector: 'mods_subject_hierarchicalGeographic_city_ms'
     -
@@ -133,7 +133,7 @@ source:
     PID:
       type: string
 process:
-  title: title 
+  title: title
   field_alternative_title: subtitle
   field_identifier: identifier
   field_pid: PID
@@ -173,7 +173,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: model 
+      source: model
     -
       plugin: static_map
       map:
@@ -184,7 +184,7 @@ process:
       default_value: http://purl.org/coar/resource_type/c_1843
     -
       plugin: entity_lookup
-      value_key: field_external_uri 
+      value_key: field_external_uri
       bundle_key: vid
       bundle: islandora_models
       entity_type: taxonomy_term
@@ -193,7 +193,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: resource_type 
+      source: resource_type
     -
       plugin: static_map
       map:
@@ -211,81 +211,81 @@ process:
         # There is no obvious mapping at https://www.loc.gov/standards/mods/mods-dcsimple.html
     -
       plugin: entity_lookup
-      value_key: field_external_uri 
+      value_key: field_external_uri
       bundle_key: vid
       bundle: resource_types
       entity_type: taxonomy_term
       ignore_case: true
   temp_person:
     -
-      plugin: migration_lookup 
+      plugin: migration_lookup
       migration: islandora_person
       source: person_agents
       no_stub: true
     -
-      plugin: typed_relation 
+      plugin: typed_relation
       role_source: person_roles
   temp_corporate:
     -
-      plugin: migration_lookup 
+      plugin: migration_lookup
       migration: islandora_corporate
       source: corporate_agents
       no_stub: true
     -
-      plugin: typed_relation 
+      plugin: typed_relation
       role_source: corporate_roles
   field_linked_agent:
     plugin: merge_ignore_empty
     source:
       - '@temp_person'
       - '@temp_corporate'
-  temp_topic: 
+  temp_topic:
     plugin: migration_lookup
     migration: islandora_subject
     source: topic
     no_stub: true
   temp_temporal:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_subject
-    source: temporal 
+    source: temporal
     no_stub: true
   temp_geographic:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_geographic
     source: geographic
     no_stub: true
   temp_continent:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_geographic
     source: continent
     no_stub: true
   temp_country:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_geographic
     source: country
     no_stub: true
   temp_province:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_geographic
-    source: province 
+    source: province
     no_stub: true
   temp_region:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_geographic
-    source: region 
+    source: region
     no_stub: true
   temp_county:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_geographic
-    source: county 
+    source: county
     no_stub: true
   temp_city:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_geographic
-    source: city 
+    source: city
     no_stub: true
   temp_city_section:
-    plugin: migration_lookup 
+    plugin: migration_lookup
     migration: islandora_geographic
     source: city_section
     no_stub: true
