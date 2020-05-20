@@ -25,7 +25,7 @@ source:
     username: fedoraAdmin
     password: fedoraAdmin
   data_parser_plugin: authenticated_xml
-  item_selector: '/mods:mods/mods:name[@type = "corporate"]'
+  item_selector: '/mods:mods/mods:name[@type = "corporate" and mods:namePart[string-length(.) > 0]]'
   constants:
     creator_uid: 1
   fields:
