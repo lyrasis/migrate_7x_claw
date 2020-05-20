@@ -36,7 +36,7 @@ source:
     -
       name: model
       label: 'Content Model'
-      selector: 'RELS_EXT_hasModel_uri_s'
+      selector: 'RELS_EXT_hasModel_uri_ms'
     -
       name: created
       label: 'Created Date'
@@ -181,6 +181,7 @@ process:
         info:fedora/islandora:sp_basic_image: http://purl.org/coar/resource_type/c_c513
         info:fedora/islandora:sp-audioCModel: http://purl.org/coar/resource_type/c_18cc
         info:fedora/islandora:sp_videoCModel: http://purl.org/coar/resource_type/c_12ce
+        info:fedora/islandora:sp_pdf: https://schema.org/DigitalDocument
       default_value: http://purl.org/coar/resource_type/c_1843
     -
       plugin: entity_lookup
