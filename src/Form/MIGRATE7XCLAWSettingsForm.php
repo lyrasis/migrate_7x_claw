@@ -36,6 +36,7 @@ class MIGRATE7XCLAWSettingsForm extends ConfigFormBase {
       'migrate_plus.migration.islandora_objects',
       'migrate_plus.migration.islandora_person',
       'migrate_plus.migration.islandora_subject',
+      'migrate_plus.migration.islandora_untyped_name',
     ];
   }
 
@@ -100,6 +101,7 @@ class MIGRATE7XCLAWSettingsForm extends ConfigFormBase {
     $islandora_objects_config = $this->config('migrate_plus.migration.islandora_objects');
     $islandora_person_config = $this->config('migrate_plus.migration.islandora_person');
     $islandora_subject_config = $this->config('migrate_plus.migration.islandora_subject');
+    $islandora_untyped_name_config = $this->config('migrate_plus.migration.islandora_untyped_name');
     $config = $this->config('migrate_7x_claw.settings');
 
     $config->set('fedora-endpoint-url', $form_state->getValue('fedora-endpoint-url'));
@@ -114,6 +116,7 @@ class MIGRATE7XCLAWSettingsForm extends ConfigFormBase {
     $islandora_objects_config->set('source.fedora_base_url', $form_state->getValue('fedora-endpoint-url'));
     $islandora_person_config->set('source.fedora_base_url', $form_state->getValue('fedora-endpoint-url'));
     $islandora_subject_config->set('source.fedora_base_url', $form_state->getValue('fedora-endpoint-url'));
+    $islandora_untyped_name_config->set('source.fedora_base_url', $form_state->getValue('fedora-endpoint-url'));
 
     $config->set('oldfedoraUsername', $form_state->getValue('oldfedoraUsername'));
     $islandora_audit_file_config->set('source.authentication.username', $form_state->getValue('oldfedoraUsername'));
@@ -125,6 +128,7 @@ class MIGRATE7XCLAWSettingsForm extends ConfigFormBase {
     $islandora_objects_config->set('source.authentication.username', $form_state->getValue('oldfedoraUsername'));
     $islandora_person_config->set('source.authentication.username', $form_state->getValue('oldfedoraUsername'));
     $islandora_subject_config->set('source.authentication.username', $form_state->getValue('oldfedoraUsername'));
+    $islandora_untyped_name_config->set('source.authentication.username', $form_state->getValue('oldfedoraUsername'));
     $islandora_files_config->set('process.uri.settings.authentication.username', $form_state->getValue('oldfedoraUsername'));
 
     if (!$form_state->getValue('oldfedorapsswd') == '') {
@@ -138,6 +142,7 @@ class MIGRATE7XCLAWSettingsForm extends ConfigFormBase {
       $islandora_objects_config->set('source.authentication.password', $form_state->getValue('oldfedorapsswd'));
       $islandora_person_config->set('source.authentication.password', $form_state->getValue('oldfedorapsswd'));
       $islandora_subject_config->set('source.authentication.password', $form_state->getValue('oldfedorapsswd'));
+      $islandora_untyped_name_config->set('source.authentication.password', $form_state->getValue('oldfedorapsswd'));
       $islandora_files_config->set('process.uri.settings.authentication.password', $form_state->getValue('oldfedorapsswd'));
     }
 
@@ -151,6 +156,7 @@ class MIGRATE7XCLAWSettingsForm extends ConfigFormBase {
     $islandora_objects_config->set('source.solr_base_url', $form_state->getValue('solr-endpoint-url'));
     $islandora_person_config->set('source.solr_base_url', $form_state->getValue('solr-endpoint-url'));
     $islandora_subject_config->set('source.solr_base_url', $form_state->getValue('solr-endpoint-url'));
+    $islandora_untyped_name_config->set('source.solr_base_url', $form_state->getValue('solr-endpoint-url'));
 
     $config->set('migrate_7x_claw_solr_q', $form_state->getValue('migrate_7x_claw_solr_q'));
     $islandora_audit_file_config->set('source.q', $form_state->getValue('migrate_7x_claw_solr_q'));
@@ -169,6 +175,7 @@ class MIGRATE7XCLAWSettingsForm extends ConfigFormBase {
     $islandora_objects_config->save();
     $islandora_person_config->save();
     $islandora_subject_config->save();
+    $islandora_untyped_name_config->save();
     parent::submitForm($form, $form_state);
   }
 
